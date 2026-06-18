@@ -1,0 +1,11 @@
+# Development tooling (not needed at runtime)
+# Инструменты разработки (не нужны в рантайме)
+#
+#   pip install -r requirements-dev.txt
+#   python -m isort .
+#   python -m black .
+
+-r requirements.txt
+
+black>=24.0
+isort>=5.13

@@ -1,0 +1,50 @@
+# VK -> Telegram forwarding bot
+# Бот пересылки постов VK -> Telegram
+#
+#   docker compose up -d --build      # build + start / собрать и запустить
+#   docker compose logs -f bot        # follow logs / смотреть логи
+#   docker compose down               # stop / остановить
+
+services:
+  bot:
+    build: .
+    image: vk2tg-bot:latest
+    container_name: vk2tg-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      # Persist the SQLite DB (storage/bot.db) and runtime data.
+      # Сохраняем БД (storage/bot.db) и данные рантайма между перезапусками.
+      - ./storage:/app/storage
+      - ./logs:/app/logs
+      - ./downloads:/app/downloads
+    # The bot polls Telegram; no inbound ports are required.
+    # Бот работает на long-polling — входящие порты не нужны.
+
+  # ---------------------------------------------------------------------------
+  # OPTIONAL: local Telegram Bot API server (for USE_LOCAL_API=true).
+  # ОПЦИОНАЛЬНО: локальный сервер Telegram Bot API (для USE_LOCAL_API=true).
+  #
+  # Enables large-file uploads (up to ~2 GB). Requires api_id / api_hash from
+  # https://my.telegram.org. If you enable this service, set in .env:
+  #   USE_LOCAL_API=true
+  #   TG_API_SERVER=http://telegram-bot-api:8081
+  # and uncomment `depends_on` above (under `bot:`).
+  #
+  # Если включаете — в .env укажите USE_LOCAL_API=true и
+  # TG_API_SERVER=http://telegram-bot-api:8081
+  # ---------------------------------------------------------------------------
+  # telegram-bot-api:
+  #   image: aiogram/telegram-bot-api:latest
+  #   container_name: telegram-bot-api
+  #   restart: unless-stopped
+  #   environment:
+  #     TELEGRAM_API_ID: ${TELEGRAM_API_ID}
+  #     TELEGRAM_API_HASH: ${TELEGRAM_API_HASH}
+  #     TELEGRAM_LOCAL: 1
+  #   volumes:
+  #     - telegram-bot-api-data:/var/lib/telegram-bot-api
+
+# volumes:
+#   telegram-bot-api-data:

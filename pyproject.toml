@@ -1,0 +1,27 @@
+# Project tooling configuration
+# Конфигурация инструментов проекта
+#
+# Single, shared code style ("one handwriting") enforced by black + isort.
+# Единый стиль кода обеспечивается black + isort.
+#
+#   python -m isort .
+#   python -m black .
+
+[tool.black]
+line-length = 100
+target-version = ["py311", "py312", "py313"]
+extend-exclude = '''
+/(
+    venv
+  | \.venv
+  | downloads
+  | storage
+  | logs
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = ["venv", ".venv", "downloads", "storage", "logs"]
+known_first_party = ["config", "database", "handlers", "services", "utils"]

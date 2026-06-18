@@ -1,0 +1,41 @@
+# Keep the build context small and never bake secrets / data into the image.
+# Минимизируем контекст сборки; секреты и данные в образ не попадают.
+
+# Secrets / Секреты
+.env
+.env.local
+
+# Virtual environment / Виртуальное окружение
+venv/
+env/
+ENV/
+
+# Python caches / Кэши Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Runtime data (persisted via volumes, not baked in) / Данные рантайма — через тома
+storage/
+downloads/
+logs/
+*.log
+.bot.lock
+
+# VCS / IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Dev tooling / Инструменты разработки
+requirements-dev.txt
+
+# Docs (not needed in the image) / Документация (в образе не нужна)
+*.md
